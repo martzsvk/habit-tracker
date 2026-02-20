@@ -31,8 +31,10 @@ def open_json():
 print("Welcome to my Habit Tracker")
 
 try:
+    # Load existing habits from json file
     habits_list = open_json()
 except FileNotFoundError:
+    # If there is non, start with an empty list 
     habits_list = []
 
 # While loop to add more habits or show habits
