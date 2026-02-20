@@ -6,6 +6,7 @@ import json
 time_now = dt.now()
 today_date = time_now.strftime("%d.%m.%Y")
 
+
 # Function to ask user to add habit
 def add_habit():
     new_habit = input("Please add some habit (e.g. programming, gym): ")
@@ -14,7 +15,7 @@ def add_habit():
     # Update json through create_json function
     create_json()
 
-# Function for creating json file
+# Function for creating and updating json file
 def create_json():
     # Creating json file
     with open("habits.json", "w") as file:
@@ -29,19 +30,31 @@ def open_json():
 # Introduction
 print("Welcome to my Habit Tracker")
 
-# Open json file if user has already added habits
 try:
     habits_list = open_json()
-    # Printing user's habits
-    print(f"These are your's habits:\n{habits_list}")
-
-# If not, create it
 except FileNotFoundError:
-    # List for habits
     habits_list = []
-    # Create json file
-    create_json()
 
+# While loop to add more habits or show habits
+adding = True
+while adding:
+    # Print options
+    print("Type 1 to add habit - 2 to show habits - 3 to exit")
+    what_to_do = input("Enter a number please: ")
 
-# Adding habit
-add_habit()
+    if what_to_do == "1":
+        add_habit()
+        print("Habit added successfully!")
+
+    elif what_to_do == "2":
+        try:
+            # Printing user's habits
+            print(f"These are your's habits:\n{habits_list}")
+        except FileNotFoundError:
+            print("Sorry you don't have any saved habits yet.")
+
+    elif what_to_do == "3":
+        adding = False
+
+    else:
+        print("You entered wrong number or format. Please try again.")
