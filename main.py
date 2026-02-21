@@ -12,20 +12,31 @@ def add_habit():
     new_habit = input("Please add some habit (e.g. programming, gym): ")
     # Adding habit to habits list
     habits_list.append({"date": today_date, "habit": new_habit, "completed": False})
-    # Update json through create_json function
+    # Update JSON through create_json function
     create_json()
 
-# Function for creating and updating json file
+# Function for creating and updating JSON file
 def create_json():
     # Creating json file
     with open("habits.json", "w") as file:
         json.dump(habits_list, file)
 
-# Function for opening json
+# Function for opening JSON
 def open_json():
     with open("habits.json") as data:
         return json.load(data)
 
+# Function to show habits in prettier form than raw JSON
+def show_habits():
+    if not habits_list:
+        print("Sorry you don't have any habits yet.")
+    else:
+        for index, habit in enumerate(habits_list, start=1):
+            if habit["completed"]:
+                status = "✔"
+            else:
+                status = " "
+            print(f"{index}. [{status}] {habit['habit']} ({habit['date']})")
 
 # Introduction
 print("Welcome to my Habit Tracker")
@@ -34,7 +45,7 @@ try:
     # Load existing habits from json file
     habits_list = open_json()
 except FileNotFoundError:
-    # If there is non, start with an empty list 
+    # If there is none, start with an empty list
     habits_list = []
 
 # While loop to add more habits or show habits
@@ -49,11 +60,7 @@ while adding:
         print("Habit added successfully!")
 
     elif what_to_do == "2":
-        try:
-            # Printing user's habits
-            print(f"These are your's habits:\n{habits_list}")
-        except FileNotFoundError:
-            print("Sorry you don't have any saved habits yet.")
+        show_habits()
 
     elif what_to_do == "3":
         adding = False
