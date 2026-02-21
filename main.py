@@ -21,7 +21,7 @@ def create_json():
     with open("habits.json", "w") as file:
         json.dump(habits_list, file)
 
-# Function for opening JSON
+# Load data from JSON
 def open_json():
     with open("habits.json") as data:
         return json.load(data)
@@ -32,11 +32,27 @@ def show_habits():
         print("Sorry you don't have any habits yet.")
     else:
         for index, habit in enumerate(habits_list, start=1):
+            # If completed == True
             if habit["completed"]:
                 status = "✔"
             else:
                 status = " "
             print(f"{index}. [{status}] {habit['habit']} ({habit['date']})")
+
+# Function to mark habit as completed (== True)
+def complete_habit():
+    show_habits()
+
+    try:
+        which_habit = int(input("Please select habit number: "))
+        # Marking habit as completed
+        habits_list[which_habit - 1]["completed"] = True
+        # Adding this data to JSON
+        create_json()
+        print("Habit marked as completed!")
+    except (IndexError, ValueError):
+        print("Sorry something went wrong. Please try again.")
+
 
 # Introduction
 print("Welcome to my Habit Tracker")
@@ -52,7 +68,7 @@ except FileNotFoundError:
 adding = True
 while adding:
     # Print options
-    print("Type 1 to add habit - 2 to show habits - 3 to exit")
+    print("Type 1 to add habit - 2 to show habits - 3 to mark habit as completed - 4 to exit")
     what_to_do = input("Enter a number please: ")
 
     if what_to_do == "1":
@@ -63,6 +79,9 @@ while adding:
         show_habits()
 
     elif what_to_do == "3":
+        complete_habit()
+
+    elif what_to_do == "4":
         adding = False
 
     else:
